@@ -55,7 +55,7 @@
 //
 //
 //CLEANING UP THE SWAPI CODE ABOVE
-const checkStatusAndParse = (response) => {
+/*const checkStatusAndParse = (response) => {
   if (!response.ok) throw new Error(`Status Code Error: ${response.status}`);
   return response.json();
 };
@@ -86,3 +86,41 @@ fetch("https://swapi.dev/api/planets/")
     console.log("Something Went Wrong with Fetch!");
     console.log(error);
   });
+*/
+
+//WELCOME TO AXIOS
+/*
+  .get("https://swapi.dev/api/planets/")
+  .then(({ data }) => {
+    console.log(data);
+    for (const planets of data.results) {
+      console.log(planets.name);
+    }
+    //this part will return a promise*** So it can be chained
+    return axios.get(data.next);
+  })
+  .then(({ data }) => {
+    console.log(data);
+    for (const planets of data.results) {
+      console.log(planets.name);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  */
+
+//Restructuring the above axios code
+const fetchNextPlanets = (url = "https://swapi.dev/api/planets/") => {
+  return axios.get(url);
+};
+
+const printPlanets = ({ data }) => {
+  console.log(data);
+  for (const planets of data.results) {
+    console.log(planets.name);
+  }
+  return Promise.resolve(data.next);
+};
+
+fetchNextPlanets().then(printPlanets).then(fetchNextPlanets).then(printPlanets);
